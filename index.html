@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Custom T3 - BI</title>
+        <!-- Custom styles for this template -->
+        <link href="css/navbar.css" rel="stylesheet">
+        <link href="css/main.css" rel="stylesheet">
+        <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div class="jumbotron">
+                <h1>Custom T3-BI</h1>
+                <p>This is an example HTML5 web page built with <a href="http://www.getbootstrap.com" target="_blank">Bootstrap</a> that query an <a href="http://www.elasticsearch.org" target="_blank">Elasticsearch</a> instance for T3 Workorders and display beautiful <a href="http://www.d3js.org" target="_blank">d3js</a> graphs.</p>
+            </div>
+
+            <div class="page-header">
+                <h1><b>Workorders</b> dashboard for "<i>CP - Torino</i>"</h1>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Status</h1>
+                        </div>
+                        <div class="panel-body">
+                            <div id="donut-chart-1"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Type</h1>
+                        </div>
+                        <div class="panel-body">
+                            <div id="donut-chart-2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">From System type</h1>
+                        </div>
+                        <div class="panel-body">
+                            <div id="donut-chart-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                          <div class="panel-heading">
+                                <h3 class="panel-title">Workorders per day</h3>
+                          </div>
+                          <div class="panel-body">
+                                <div id="woperday-histogram"></div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div> <!-- /container -->
+
+        
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/thirdparty/require.js"></script>
+        <script>require(["js/main"], function () {})</script>
+    </body>
+</html>
