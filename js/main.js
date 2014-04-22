@@ -454,7 +454,7 @@ define(['js/thirdparty/d3.v3', 'js/thirdparty/elasticsearch'], function(d3, elas
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
       x.domain(labels);
-      y.domain(values);
+      y.domain([0, d3.max(values)]);
 
         svg.append("g")
             .attr("class", "x axis")
@@ -478,7 +478,11 @@ define(['js/thirdparty/d3.v3', 'js/thirdparty/elasticsearch'], function(d3, elas
             .attr("x", function(d) { return x(d.x); })
             .attr("width", x.rangeBand())
             .attr("y", function(d) { return y(d.y); })
-            .attr("height", function(d) { return height - y(d.y); });
+            .attr("height", function(d) { 
+
+              console.log("Height: " + height);
+              console.log("y(d.y): " + y(d.y));
+              return height - y(d.y); });
 
     });
 
