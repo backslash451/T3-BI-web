@@ -88,5 +88,15 @@
         <script src="js/bootstrap.min.js"></script>
         <script src="js/thirdparty/require.js"></script>
         <script>require(["js/main"], function () {})</script>
+        <script>
+            var aspect = 960 / 500,
+              chart = $("#woperday-histogram");
+            
+            $(window).on("resize", function() {
+              var targetWidth = chart.parent().width();
+              chart.attr("width", targetWidth);
+              chart.attr("height", targetWidth / aspect);
+            });
+        </script>
     </body>
 </html>

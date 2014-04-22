@@ -406,7 +406,7 @@ define(['js/thirdparty/d3.v3', 'js/thirdparty/elasticsearch'], function(d3, elas
           //End query
       }
     }).then(function(resp) {
-      console.log(resp);
+      // console.log(resp);
       // #woperday-histogram
       var woperday = resp.aggregations.woperday.buckets;
 
@@ -450,6 +450,9 @@ define(['js/thirdparty/d3.v3', 'js/thirdparty/elasticsearch'], function(d3, elas
       var svg = d3.select("#woperday-histogram").append("svg")
           .attr("width", width + margin.left + margin.right)
           .attr("height", height + margin.top + margin.bottom)
+          .attr("perserveAspectRatio", "xMinYMid")
+          .attr("viewBox", "0 0 960 500")
+          // .attr("style", "display:block; margin-left:auto; margin-right:auto;")
           .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -469,7 +472,7 @@ define(['js/thirdparty/d3.v3', 'js/thirdparty/elasticsearch'], function(d3, elas
             .attr("y", 6)
             .attr("dy", ".71em")
             .style("text-anchor", "end")
-            .text("Frequency");
+            .text("Workorders");
 
         svg.selectAll(".bar")
             .data(data)
@@ -478,11 +481,7 @@ define(['js/thirdparty/d3.v3', 'js/thirdparty/elasticsearch'], function(d3, elas
             .attr("x", function(d) { return x(d.x); })
             .attr("width", x.rangeBand())
             .attr("y", function(d) { return y(d.y); })
-            .attr("height", function(d) { 
-
-              console.log("Height: " + height);
-              console.log("y(d.y): " + y(d.y));
-              return height - y(d.y); });
+            .attr("height", function(d) { return height - y(d.y); });
 
     });
 
