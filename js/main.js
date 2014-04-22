@@ -406,7 +406,7 @@ define(['js/thirdparty/d3.v3', 'js/thirdparty/elasticsearch'], function(d3, elas
           //End query
       }
     }).then(function(resp) {
-      // console.log(resp);
+      console.log(resp);
       // #woperday-histogram
       var woperday = resp.aggregations.woperday.buckets;
 
@@ -436,12 +436,25 @@ define(['js/thirdparty/d3.v3', 'js/thirdparty/elasticsearch'], function(d3, elas
       var x = d3.scale.ordinal()
           .rangeRoundBands([0, width], .1);
 
+      // var x = d3.time.scale()
+      //     .rangeRound([0, width]);
+
       var y = d3.scale.linear()
           .range([height, 0]);
+
+      // var formatDate = d3.time.format("%Y-%m-%d");
+
+      // var firstDate = formatDate.parse(labels[0]);
+      // var lastDate = formatDate.parse(labels[labels.length - 1]);
+
+      // x.domain([firstDate, lastDate]);
+      x.domain(labels);
+      y.domain([0, d3.max(values)]);
 
       var xAxis = d3.svg.axis()
           .scale(x)
           .orient("bottom");
+          // .tickFormat(formatDate);
 
       var yAxis = d3.svg.axis()
           .scale(y)
@@ -450,14 +463,9 @@ define(['js/thirdparty/d3.v3', 'js/thirdparty/elasticsearch'], function(d3, elas
       var svg = d3.select("#woperday-histogram").append("svg")
           .attr("width", width + margin.left + margin.right)
           .attr("height", height + margin.top + margin.bottom)
-          .attr("perserveAspectRatio", "xMinYMid")
-          .attr("viewBox", "0 0 960 500")
-          // .attr("style", "display:block; margin-left:auto; margin-right:auto;")
+          .attr("style", "display:block; margin-left:auto; margin-right:auto;")
           .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-      x.domain(labels);
-      y.domain([0, d3.max(values)]);
 
         svg.append("g")
             .attr("class", "x axis")
@@ -474,11 +482,16 @@ define(['js/thirdparty/d3.v3', 'js/thirdparty/elasticsearch'], function(d3, elas
             .style("text-anchor", "end")
             .text("Workorders");
 
+
+        var histogram = d3.layout.histogram()
+            .bins(20)
+            (values)
+
         svg.selectAll(".bar")
             .data(data)
             .enter().append("rect")
             .attr("class", "bar")
-            .attr("x", function(d) { return x(d.x); })
+            .attr("x", function(d) { console.log(d.x); return x(d.x); })
             .attr("width", x.rangeBand())
             .attr("y", function(d) { return y(d.y); })
             .attr("height", function(d) { return height - y(d.y); });
