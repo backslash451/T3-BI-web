@@ -410,32 +410,42 @@ define(['js/thirdparty/d3.v3', 'js/thirdparty/elasticsearch'], function(d3, elas
       // #woperday-histogram
       var woperday = resp.aggregations.woperday.buckets;
 
-      // Generate a Bates distribution of 10 random variables.
-      var values = d3.range(1000).map(d3.random.bates(10));
+      var data = new Array();
+      for (var i = 0; i < woperday.length; i++) {
+        data[i] = new Array();
+        data[i]["x"] = woperday[i].key_as_string;
+        data[i]["y"] = woperday[i].doc_count;
+      };
 
-      // A formatter for counts.
-      var formatCount = d3.format(",.0f");
+      var values = new Array();
+      for (var i = 0; i < woperday.length; i++) {
+        values[i] = woperday[i].doc_count;
+      };
 
-      var margin = {top: 10, right: 30, bottom: 30, left: 30},
+      var labels = new Array();
+      for (var i = 0; i < woperday.length; i++) {
+        labels[i] = woperday[i].key_as_string;
+      };
+
+      //-------------
+
+      var margin = {top: 20, right: 20, bottom: 30, left: 40},
           width = 960 - margin.left - margin.right,
           height = 500 - margin.top - margin.bottom;
 
-      var x = d3.scale.linear()
-          .domain([0, 1])
-          .range([0, width]);
-
-      // Generate a histogram using twenty uniformly-spaced bins.
-      var data = d3.layout.histogram()
-          .bins(x.ticks(20))
-          (values);
+      var x = d3.scale.ordinal()
+          .rangeRoundBands([0, width], .1);
 
       var y = d3.scale.linear()
-          .domain([0, d3.max(data, function(d) { return d.y; })])
           .range([height, 0]);
 
       var xAxis = d3.svg.axis()
           .scale(x)
           .orient("bottom");
+
+      var yAxis = d3.svg.axis()
+          .scale(y)
+          .orient("left");
 
       var svg = d3.select("#woperday-histogram").append("svg")
           .attr("width", width + margin.left + margin.right)
@@ -443,28 +453,32 @@ define(['js/thirdparty/d3.v3', 'js/thirdparty/elasticsearch'], function(d3, elas
           .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      var bar = svg.selectAll(".bar")
-          .data(data)
-          .enter().append("g")
-          .attr("class", "bar")
-          .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+      x.domain(labels);
+      y.domain(values);
 
-      bar.append("rect")
-          .attr("x", 1)
-          .attr("width", x(data[0].dx) - 1)
-          .attr("height", function(d) { return height - y(d.y); });
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis);
 
-      bar.append("text")
-          .attr("dy", ".75em")
-          .attr("y", 6)
-          .attr("x", x(data[0].dx) / 2)
-          .attr("text-anchor", "middle")
-          .text(function(d) { return formatCount(d.y); });
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", ".71em")
+            .style("text-anchor", "end")
+            .text("Frequency");
 
-      svg.append("g")
-          .attr("class", "x axis")
-          .attr("transform", "translate(0," + height + ")")
-          .call(xAxis);
+        svg.selectAll(".bar")
+            .data(data)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", function(d) { return x(d.x); })
+            .attr("width", x.rangeBand())
+            .attr("y", function(d) { return y(d.y); })
+            .attr("height", function(d) { return height - y(d.y); });
 
     });
 
